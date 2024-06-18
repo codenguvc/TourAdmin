@@ -1,0 +1,56 @@
+<nb-card>
+  <div class="container">
+    <h2 class="mt-3">Thêm đơn hàng mới</h2>
+    <form (ngSubmit)="addOrder(orderForm)" #orderForm="ngForm" novalidate>
+      <div class="form-group">
+        <label for="tourId">Tour:</label>
+        <select class="form-control mt-2" id="tourId" name="tourId" [(ngModel)]="newOrder.tour_id"
+          (change)="onTourChange()" required #tourId="ngModel">
+          <option *ngFor="let tour of tours" [value]="tour.id">{{ tour.name }}</option>
+        </select>
+        <div *ngIf="tourId.invalid && (tourId.dirty || tourId.touched)" class="text-danger mt-2">
+          <div *ngIf="tourId.errors?.required">Vui lòng chọn một tour.</div>
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <label for="customerId">Khách hàng:</label>
+        <select class="form-control mt-2" id="customerId" name="customerId" [(ngModel)]="newOrder.customer_id"
+          (change)="onCustomerChange()" required #customerId="ngModel">
+          <option *ngFor="let customer of customers" [value]="customer.id">{{ customer.id }} - {{ customer.name }}
+          </option>
+        </select>
+        <div *ngIf="customerId.invalid && (customerId.dirty || customerId.touched)" class="text-danger mt-2">
+          <div *ngIf="customerId.errors?.required">Vui lòng chọn một khách hàng.</div>
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <label for="email">Email khách hàng:</label>
+        <input type="email" class="form-control mt-2" id="email" name="email" [(ngModel)]="newOrder.customer_email"
+          required #email="ngModel">
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger mt-2">
+          <div *ngIf="email.errors?.required">Email khách hàng không được để trống.</div>
+          <div *ngIf="email.errors?.email">Email không hợp lệ.</div>
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <label for="bookingDate">Ngày đặt:</label>
+        <input type="date" class="form-control mt-2" id="bookingDate" name="bookingDate"
+          [(ngModel)]="newOrder.booking_date" required #bookingDate="ngModel">
+        <div *ngIf="bookingDate.invalid && (bookingDate.dirty || bookingDate.touched)" class="text-danger mt-2">
+          <div *ngIf="bookingDate.errors?.required">Ngày đặt không được để trống.</div>
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <label for="totalPrice">Tổng giá:</label>
+        <div class="input-group mt-2">
+          <select class="form-control mt-2" id="total_price" name="total_price" [(ngModel)]="newOrder.tour_id"
+            (change)="onTourChange()" required #tourId="ngModel">
+            <option disabled *ngFor="let tour of tours" [value]="tour.id">{{ tour.price.toLocaleString() }} VNĐ</option>
+          </select>
+        </div>
+      </div>
+<button type="submit" class="btn btn-primary mt-3 mb-3" [disabled]="orderForm.invalid || submitting">Thêm đơn
+        hàng</button>
+    </form>
+  </div>
+</nb-card>
