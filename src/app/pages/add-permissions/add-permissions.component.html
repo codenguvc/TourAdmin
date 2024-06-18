@@ -1,0 +1,26 @@
+<nb-card>
+    <div class="container mt-4">
+        <h2 class="mb-4">Thêm mới quyền</h2>
+        <form (ngSubmit)="addPer(perForm)" #perForm="ngForm">
+            <div class="form-group">
+                <label for="permissionName">Tên quyền:</label>
+                <input type="text" class="form-control mt-2" id="permissionName" placeholder="Nhập tên quyền"
+                    name="permissionName" [(ngModel)]="newPer.name" required #permissionName="ngModel" />
+                <div *ngIf="permissionName.invalid && (permissionName.dirty || permissionName.touched)"
+                    class="text-danger">
+                    <div *ngIf="permissionName.errors?.required">Tên quyền không được để trống.</div>
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <label for="permissionSlug">Đường dẫn:</label>
+                <input type="text" class="form-control mt-2" id="permissionSlug" placeholder="Nhập đường dẫn"
+                    name="permissionSlug" [(ngModel)]="newPer.slug" required #permissionSlug="ngModel" />
+                <div *ngIf="permissionSlug.invalid && (permissionSlug.dirty || permissionSlug.touched)"
+                    class="text-danger">
+                    <div *ngIf="permissionSlug.errors?.required">Đường dẫn không được để trống.</div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3 mb-3" [disabled]="perForm.invalid">Lưu</button>
+        </form>
+    </div>
+</nb-card>

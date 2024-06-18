@@ -1,0 +1,26 @@
+<nb-card>
+    <div class="container mt-4">
+        <h2 class="mb-4">Chỉnh sửa quyền</h2>
+        <form (ngSubmit)="saveEditedPermission(editForm)" #editForm="ngForm">
+            <div class="form-group">
+                <label for="permissionName">Tên quyền:</label>
+                <input type="text" class="form-control mt-2" id="permissionName" name="permissionName"
+                    placeholder="Nhập tên quyền" [(ngModel)]="editPer.name" required #permissionName="ngModel" />
+                <div *ngIf="permissionName.invalid && (permissionName.dirty || permissionName.touched)"
+                    class="text-danger">
+                    <div *ngIf="permissionName.errors?.required">Tên quyền không được để trống.</div>
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <label for="permissionSlug">Slug:</label>
+                <input type="text" class="form-control mt-2" id="permissionSlug" name="permissionSlug"
+                    placeholder="Nhập slug" [(ngModel)]="editPer.slug" required #permissionSlug="ngModel" />
+                <div *ngIf="permissionSlug.invalid && (permissionSlug.dirty || permissionSlug.touched)"
+                    class="text-danger">
+                    <div *ngIf="permissionSlug.errors?.required">Slug không được để trống.</div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3 mb-3" [disabled]="editForm.invalid">Lưu</button>
+        </form>
+    </div>
+</nb-card>
