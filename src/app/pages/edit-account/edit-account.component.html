@@ -1,0 +1,33 @@
+<nb-card>
+    <div class="container mt-4">
+        <h2>Chỉnh sửa tài khoản</h2>
+        <form (ngSubmit)="editAccount()" #accountForm="ngForm">
+            <!-- Input hidden để lưu ID -->
+            <input type="hidden" name="account_id" [(ngModel)]="editedAccount.account_id">
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control mt-2" id="email" name="email" [(ngModel)]="editedAccount.email"
+                    required>
+            </div>
+            <div class="form-group mt-3">
+                <label for="username">Tên tài khoản:</label>
+                <input type="text" class="form-control mt-2" id="username" name="username"
+                    [(ngModel)]="editedAccount.username" required>
+            </div>
+            <div class="form-group mt-3">
+                <label for="password">Mật khẩu:</label>
+                <input type="password" class="form-control mt-2" id="password" name="password"
+                    [(ngModel)]="editedAccount.password" readonly>
+            </div>
+            
+            <div class="form-group mt-3">
+                <label for="role">Vai trò:</label>
+                <select class="form-control mt-2" id="role" name="role_id" [(ngModel)]="editedAccount.role_id" required>
+                    <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3 mb-3">Lưu</button>
+        </form>
+    </div>
+</nb-card>
