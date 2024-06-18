@@ -1,0 +1,49 @@
+<nb-card>
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col d-flex justify-content-between align-items-center">
+        <h2 class="mt-3">Đơn hàng</h2>
+        <button class="btn btn-success" (click)="navigateToAddLocation()">
+          Thêm mới
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tour Name</th>
+            <th>Khách hàng</th>
+            <th>Email khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Tổng giá</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>{{ order.id }}</td>
+            <td>{{ order.tour_name }}</td>
+            <td>{{ order.customer_name }}</td>
+            <td>{{ order.customer_email }}</td>
+            <td>{{ order.booking_date | date : 'dd/MM/yyyy' }}</td>
+            <td>{{ order.total_price.toLocaleString() }} VNĐ</td>
+            <td>
+              <span class="mx-2"></span>
+              <button class="btn btn-danger" (click)="deleteOrder(order.id)">
+                Xóa
+              </button>
+              <button class="btn btn-success ms-2" (click)="exportOrder(order.id)">
+                Xuất
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ngx-paginator [current_page]="currentPage" [last_page]="lastPage"></ngx-paginator>
+  
+</nb-card>
