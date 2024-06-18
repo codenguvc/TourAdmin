@@ -1,0 +1,91 @@
+<nb-card>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col d-flex justify-content-between align-items-center">
+                <h2>Thêm tour mới</h2>
+            </div>
+        </div>
+        <div class="row">
+            <form #tourForm="ngForm" (ngSubmit)="addTour(tourForm)">
+                <div class="form-group">
+                    <label for="tourName">Tên tour:</label>
+                    <input type="text" class="form-control mt-2" id="tourName" name="tourName"
+                        [(ngModel)]="newTour.name" #tourName="ngModel" required />
+                    <div *ngIf="tourName.invalid && (tourName.dirty || tourName.touched)" class="text-danger">
+                        <div *ngIf="tourName.errors.required">
+                            Tour không được để trống.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="locationId">Địa điểm:</label>
+                    <select class="form-control mt-2" id="locationId" name="locationId"
+                        [(ngModel)]="newTour.location_id" #locationId="ngModel" required>
+                        <option *ngFor="let location of locations" [value]="location.id">{{ location.name }}</option>
+                    </select>
+                    <div *ngIf="locationId.invalid && (locationId.dirty || locationId.touched)" class="text-danger">
+                        Địa điểm là bắt buộc.
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="startDate">Ngày bắt đầu:</label>
+                    <input type="date" class="form-control mt-2" id="startDate" name="startDate"
+                        [(ngModel)]="newTour.start_date" #startDate="ngModel" (change)="validateDates(tourForm)"
+                        required />
+                    <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)" class="text-danger">
+                        <div *ngIf="startDate.errors.required">
+                            Ngày bắt đầu là bắt buộc.
+                        </div>
+                        <div *ngIf="startDate.errors.invalidStartDate">
+                            Ngày bắt đầu không được nhỏ hơn ngày hiện tại.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="endDate">Ngày kết thúc:</label>
+                    <input type="date" class="form-control mt-2" id="endDate" name="endDate"
+                        [(ngModel)]="newTour.end_date" #endDate="ngModel" (change)="validateDates(tourForm)"
+                        required />
+                    <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
+                        <div *ngIf="endDate.errors.required">
+                            Ngày kết thúc là bắt buộc.
+                        </div>
+                        <div *ngIf="endDate.errors.invalidEndDate">
+                            Ngày kết thúc không được nhỏ hơn ngày bắt đầu.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="price">Giá:</label>
+                    <input type="number" class="form-control mt-2" id="price" name="price" [(ngModel)]="newTour.price"
+                        #price="ngModel" required min="0.01" pattern="[1-9][0-9]*" />
+                    <div *ngIf="price.invalid && (price.dirty || price.touched)" class="text-danger">
+                        <div *ngIf="price.errors.required">
+                            Giá không được để trống.
+                        </div>
+                        <div *ngIf="price.errors.pattern">
+                            Giá phải là số dương và không bắt đầu bằng số 0.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="description">Mô tả:</label>
+                    <textarea class="form-control mt-2" id="description" name="description"
+                        [(ngModel)]="newTour.description" #description="ngModel" required></textarea>
+                    <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-danger">
+                        Mô tả là bắt buộc.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3 mb-3" [disabled]="tourForm.invalid">Thêm tour</button>
+                <span class="mx-2"></span>
+                <button type="button" class="btn btn-secondary ml-2 mt-3 mb-3" (click)="goBack()">Quay lại</button>
+            </form>
+        </div>
+    </div>
+</nb-card>
