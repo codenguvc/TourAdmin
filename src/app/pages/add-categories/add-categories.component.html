@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="container mt-4">
+        <h2 class="mb-4">Thêm mới danh mục</h2>
+        <form (ngSubmit)="addCate(cateForm)" #cateForm="ngForm">
+            <div class="form-group">
+                <label for="categoryName">Tên danh mục:</label>
+                <input type="text" class="form-control mt-2" id="categoryName" placeholder="Nhập tên danh mục"
+                    name="categoryName" [(ngModel)]="newCate.name" required #categoryName="ngModel">
+                <div *ngIf="categoryName.invalid && (categoryName.dirty || categoryName.touched)" class="text-danger">
+                    <div *ngIf="categoryName.errors?.required">Tên danh mục không được để trống.</div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3 mb-3" [disabled]="cateForm.invalid">Lưu</button>
+        </form>
+    </div>
+</div>

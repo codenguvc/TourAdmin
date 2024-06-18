@@ -1,0 +1,41 @@
+<nb-card>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mt-3">Danh sách danh mục</h2>
+            <button class="btn btn-success" (click)="navigateToAddCategories()">
+                Thêm mới
+            </button>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên Danh Mục</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let categori of categories">
+                    <td>{{ categori.id }}</td>
+                    <td>{{ categori.name }}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="navigateToEditCategories(categori.id)">
+                            Sửa
+                        </button>
+                        <span class="mx-2"></span>
+                        <button class="btn btn-danger" (click)="deleteCategori(categori.id)" data-toggle="popover"
+                            data-trigger="focus" title="Xác nhận xóa"
+                            data-content="Bạn có chắc chắn muốn xóa {{ categori.name }} không?">
+                            Xóa
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <ngx-paginator class="mb-3" [apiUrl]="apiUrl" [current_page]="currentPage" [last_page]="lastPage"
+        (dataList)="onDataListChange($event)">
+    </ngx-paginator>
+
+    </div>
+</nb-card>
