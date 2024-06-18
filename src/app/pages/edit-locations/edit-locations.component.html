@@ -1,0 +1,38 @@
+<nb-card>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col d-flex justify-content-between align-items-center">
+                <h2 class="mt-3">Cập nhật địa điểm</h2>
+            </div>
+        </div>
+        <div class="row">
+            <form (ngSubmit)="onSubmit()" #editLocationForm="ngForm">
+                <div class="form-group">
+                    <label for="locationName">Tên địa điểm:</label>
+                    <input type="text" class="form-control" id="locationName" name="locationName"
+                        placeholder="Nhập tên địa điểm" [(ngModel)]="location.name" required #locationName="ngModel">
+                    <div *ngIf="locationName.invalid && (locationName.dirty || locationName.touched)" class="text-danger">
+                        <div *ngIf="locationName.errors?.required">Tên địa điểm không được để trống.</div>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="category">Thể loại:</label>
+                    <select class="form-control" id="category" name="category" [(ngModel)]="location.category_id" required>
+                        <option value="">Chọn thể loại</option>
+                        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                    </select>
+                    <div *ngIf="editLocationForm.submitted && !location.category_id" class="text-danger">Vui lòng chọn thể loại.</div>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="locationImage">Hình ảnh:</label>
+                    <input type="file" class="form-control-file" id="locationImage" (change)="previewImage($event)">
+                    <img *ngIf="imageUrl" [src]="imageUrl" id="imagePreview" class="mt-2"
+                        style="max-width: 300px; display: block;" alt="Xem trước hình ảnh">
+                    <img *ngIf="!imageUrl && location.image_url" [src]="location.image_url" id="imagePreview" class="mt-2"
+                        style="max-width: 300px; display: block;" alt="Xem trước hình ảnh">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3 mb-3" [disabled]="editLocationForm.invalid">Sửa địa điểm</button>
+            </form>
+        </div>
+    </div>
+</nb-card>
