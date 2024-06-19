@@ -86,19 +86,25 @@ export class AccountComponent implements OnInit {
       cancelButtonText: 'Hủy bỏ',
     }).then((result) => {
       if (result.isConfirmed) {
+
         this.http.delete(`${API_URLS.deleteUsers.replace(':id', id)}`, httpOptions).subscribe(
           () => {
             Swal.fire('Đã xóa!', 'Tài khoản đã được xóa.', 'success');
             this.fetchAccounts(this.currentPage);
           },
           (error) => {
-            Swal.fire('Lỗi!', 'Có lỗi xảy ra khi xóa tài khoản.', 'error');
+            if (error.status === 403) {
+              Swal.fire('Lỗi!', 'Không thể xóa tài khoản chính này.', 'error');
+            } else {
+              Swal.fire('Lỗi!', 'Có lỗi xảy ra khi xóa tài khoản.', 'error');
+            }
             console.error('Error deleting account:', error);
           }
         );
       }
     });
   }
+
 
   navigateToAddAccount() {
     this.router.navigate(['/pages/add-accounts']);

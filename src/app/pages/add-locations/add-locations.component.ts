@@ -18,6 +18,8 @@ export class AddLocationsComponent implements OnInit {
   } = { locationName: '', category_id: '' };
 
   imageUrl: string | undefined;
+  imageSelected: boolean = false;
+
   categories: any[] = [];
 
   constructor(private router: Router, private http: HttpClient) {}
@@ -38,7 +40,7 @@ export class AddLocationsComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.locationForm.valid) {
+    if (this.locationForm.valid && this.imageSelected) { // Kiểm tra imageSelected trong onSubmit
       const formData = new FormData();
       formData.append('locationName', this.newLocation.locationName);
       formData.append('category_id', this.newLocation.category_id);
@@ -74,6 +76,7 @@ export class AddLocationsComponent implements OnInit {
         this.imageUrl = e.target.result;
       };
       reader.readAsDataURL(file);
+      this.imageSelected = true;
     }
   }
 }

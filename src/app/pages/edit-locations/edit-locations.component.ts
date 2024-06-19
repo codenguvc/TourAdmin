@@ -8,7 +8,7 @@ import { API_URLS } from '../../@core/environments/environment';
 interface Location {
   id: number;
   name: string;
-  image_url: string;
+  image: string;
   category_id: number;
 }
 
@@ -22,7 +22,7 @@ export class EditLocationsComponent implements OnInit {
   location: Location = {
     id: 0,
     name: '',
-    image_url: '',
+    image: '',
     category_id: 0,
   };
   imageUrl: string | undefined;
@@ -55,45 +55,69 @@ export class EditLocationsComponent implements OnInit {
     this.http.get<Location>(`${API_URLS.getLocaByID}/${id}`).subscribe(
       (data) => {
         this.location = data;
-        this.imageUrl = this.location.image_url;
+
+        if (data.image) {
+          this.imageUrl = `http://127.0.0.1:3456/uploads/${data.image}`;
+        } else {
+          this.imageUrl = '';
+        }
       },
       (error) => {
         console.error('Error fetching location:', error);
       }
     );
-
   }
 
   onSubmit() {
     if (this.editLocationForm.valid) {
-      const formData = new FormData();
-      formData.append('id', this.location.id.toString());
-      formData.append('name', this.location.name);
-      formData.append('category_id', this.location.category_id.toString());
+      const requestBody = {
+        id: this.location.id,
+        name: this.location.name,
+        category_id: this.location.category_id,
+        image: this.location.image,
+      };
 
       const fileInput = document.getElementById('locationImage') as HTMLInputElement;
       if (fileInput.files && fileInput.files[0]) {
+        const formData = new FormData();
+        formData.append('id', this.location.id.toString());
+        formData.append('name', this.location.name);
+        formData.append('category_id', this.location.category_id.toString());
         formData.append('image', fileInput.files[0]);
+        this.http.post(API_URLS.editLoca, formData).subscribe(
+          (response) => {
+            console.log('Location updated successfully', response);
+            Swal.fire({
+              icon: 'success',
+              title: 'Chỉnh sửa địa điểm thành công!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.router.navigate(['/pages/locations']);
+          },
+          (error) => {
+            console.error('Error updating location:', error);
+          }
+        );
+      } else {
+        this.http.post(API_URLS.editLoca, requestBody).subscribe(
+          (response) => {
+            console.log('Location updated successfully', response);
+            Swal.fire({
+              icon: 'success',
+              title: 'Chỉnh sửa địa điểm thành công!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.router.navigate(['/pages/locations']);
+          },
+          (error) => {
+            console.error('Error updating location:', error);
+          }
+        );
       }
-
-      this.http.post(API_URLS.editLoca, formData).subscribe(
-        (response) => {
-          console.log('Location updated successfully', response);
-          Swal.fire({
-            icon: 'success',
-            title: 'Chỉnh sửa địa điểm thành công!',
-            showConfirmButton: false,
-            timer: 1500
-          });
-          this.router.navigate(['/pages/locations']);
-        },
-        (error) => {
-          console.error('Error updating location:', error);
-        }
-      );
     }
   }
-
   previewImage(event: any) {
     const file = event.target.files[0];
     if (file) {
